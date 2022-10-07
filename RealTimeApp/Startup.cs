@@ -35,6 +35,8 @@ namespace RealTimeApp
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RealTimeApp", Version = "v1" });
             });
 
+            services.AddSignalR();
+
             services.AddDbContext<MyDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
