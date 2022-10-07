@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using RealTimeApp.Data;
+using RealTimeApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,6 +60,10 @@ namespace RealTimeApp
 
             app.UseAuthorization();
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<BroadcastHub>("/notify");
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
