@@ -17,7 +17,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
   errorMessage?: string ;
   employeeForm?: FormGroup ;
   tranMode?: string ;
-  employee?: any;
+  employee?: Employee | any;
   private sub?: Subscription ;
 
   displayMessage: { [key: string]: string } = {};
@@ -110,6 +110,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
         this.employeeService.deleteEmployee(this.employee.id)
           .subscribe(
             () => this.onSaveComplete(),
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             (error: any) => this.errorMessage = <any>error
           );
       }
