@@ -53,6 +53,12 @@ namespace RealTimeApp.Controllers
             }
 
             _context.Entry(employee).State = EntityState.Modified;
+            Notification notification = new Notification()
+            {
+                EmployeeName = employee.Name,
+                TranType = "Edit"
+            };
+            _context.Notification.Add(notification);
 
             try
             {
