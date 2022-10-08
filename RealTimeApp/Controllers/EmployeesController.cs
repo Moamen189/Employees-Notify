@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using RealTimeApp.Data;
 using RealTimeApp.Models;
@@ -15,10 +16,12 @@ namespace RealTimeApp.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly MyDbContext _context;
+        private readonly IHubContext<BroadcastHub, IHubClient> _hubContext;
 
-        public EmployeesController(MyDbContext context)
+        public EmployeesController(MyDbContext context , IHubContext<BroadcastHub, IHubClient> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         // GET: api/Employees
@@ -63,6 +66,7 @@ namespace RealTimeApp.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                await _hubContext.Clients.All.BroadcastMessage();
             }
             catch (DbUpdateConcurrencyException)
             {
