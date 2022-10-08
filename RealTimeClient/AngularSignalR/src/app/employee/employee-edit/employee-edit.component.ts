@@ -1,8 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Component, OnInit, OnDestroy, ElementRef, ViewChildren } from '@angular/core';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormControlName, FormGroup, FormBuilder, Validators } from '@angular/forms';
-//import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
@@ -14,13 +12,13 @@ import { EmployeeService } from '../employee.service';
 })
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class EmployeeEditComponent implements OnInit, OnDestroy {
-  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[] | undefined;
+  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements?: ElementRef[];
   pageTitle = 'Employee Edit';
-  errorMessage: any ;
-  employeeForm: any ;
-  tranMode: any ;
-  employee: any ;
-  private sub: any ;
+  errorMessage?: string ;
+  employeeForm?: FormGroup ;
+  tranMode?: string ;
+  employee?: any;
+  private sub?: Subscription ;
 
   displayMessage: { [key: string]: string } = {};
   private validationMessages: { [key: string]: { [key: string]: string } };
@@ -36,7 +34,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
         minlength: 'Employee name must be at least three characters.',
         maxlength: 'Employee name cannot exceed 50 characters.'
       },
-      cityname: {
+      cityName: {
         required: 'Employee city name is required.',
       }
     };
@@ -72,14 +70,13 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.sub?.unsubscribe();
   }
 
   getEmployee(id: string): void {
     this.employeeService.getEmployee(id)
       .subscribe(
         (employee: Employee) => this.displayEmployee(employee),
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (error: any) => this.errorMessage = <any>error
       );
   }
@@ -94,26 +91,25 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
     } else {
       this.pageTitle = `Edit Employee: ${this.employee.name}`;
     }
-    this.employeeForm.patchValue({
+    this.employeeForm?.patchValue({
       name: this.employee.name,
       address: this.employee.address,
       gender: this.employee.gender,
       company: this.employee.company,
       designation: this.employee.designation,
-      cityname: this.employee.cityName
+      cityName: this.employee.cityName
     });
   }
 
   deleteEmployee(): void {
-    if (this.employee.id == '0') {
+    if (this.employee?.id == '0') {
       this.onSaveComplete();
     } else {
       // eslint-disable-next-line no-restricted-globals
-      if (confirm(`Are you sure want to delete this Employee: ${this.employee.name}?`)) {
+      if (confirm(`Are you sure want to delete this Employee: ${this.employee?.name}?`)) {
         this.employeeService.deleteEmployee(this.employee.id)
           .subscribe(
             () => this.onSaveComplete(),
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             (error: any) => this.errorMessage = <any>error
           );
       }
@@ -121,7 +117,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
   }
 
   saveEmployee(): void {
-    if (this.employeeForm.valid) {
+    if (this.employeeForm?.valid) {
       if (this.employeeForm.dirty) {
         const p = { ...this.employee, ...this.employeeForm.value };
         if (p.id === '0') {
@@ -148,7 +144,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
   }
 
   onSaveComplete(): void {
-    this.employeeForm.reset();
+    this.employeeForm?.reset();
     this.router.navigate(['/employees']);
   }
 }
