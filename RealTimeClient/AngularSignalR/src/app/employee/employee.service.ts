@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
@@ -8,6 +9,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class EmployeeService {
   private employeesUrl = environment.baseUrl + 'api/employees';
 
@@ -78,7 +80,7 @@ export class EmployeeService {
       gender: "Male",
       company: "FCI",
       designation: "X",
-      cityname: "Suez"
+      cityName: "Suez"
     };
   }
 }

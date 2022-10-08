@@ -5,5 +5,5 @@ export interface Employee {
   gender: string,
   company: string,
   designation: string,
-  cityname: string
+  cityName: string
 }
