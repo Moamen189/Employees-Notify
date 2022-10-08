@@ -1,4 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Component, OnInit, OnDestroy, ElementRef, ViewChildren } from '@angular/core';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormControlName, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -77,6 +79,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
     this.employeeService.getEmployee(id)
       .subscribe(
         (employee: Employee) => this.displayEmployee(employee),
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (error: any) => this.errorMessage = <any>error
       );
   }
@@ -86,7 +89,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
       this.employeeForm.reset();
     }
     this.employee = employee;
-    if (this.employee.id == '0') {
+    if (this.employee.id == null || '0') {
       this.pageTitle = 'Add Employee';
     } else {
       this.pageTitle = `Edit Employee: ${this.employee.name}`;
@@ -102,7 +105,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
   }
 
   deleteEmployee(): void {
-    if (this.employee?.id == '0') {
+    if (this.employee?.id == null || '0') {
       this.onSaveComplete();
     } else {
       // eslint-disable-next-line no-restricted-globals
