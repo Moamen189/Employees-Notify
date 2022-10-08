@@ -1,7 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Component, OnInit, OnDestroy, ElementRef, ViewChildren } from '@angular/core';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormControlName, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+//import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
@@ -78,6 +79,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
     this.employeeService.getEmployee(id)
       .subscribe(
         (employee: Employee) => this.displayEmployee(employee),
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (error: any) => this.errorMessage = <any>error
       );
   }
@@ -126,12 +128,14 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
           this.employeeService.createEmployee(p)
             .subscribe(
               () => this.onSaveComplete(),
+              // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
               (error: any) => this.errorMessage = <any>error
             );
         } else {
           this.employeeService.updateEmployee(p)
             .subscribe(
               () => this.onSaveComplete(),
+              // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
               (error: any) => this.errorMessage = <any>error
             );
         }
