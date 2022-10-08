@@ -18,20 +18,20 @@ namespace RealTimeApp.Controllers
         private readonly MyDbContext _context;
         private readonly IHubContext<BroadcastHub, IHubClient> _hubContext;
 
-        public EmployeesController(MyDbContext context , IHubContext<BroadcastHub, IHubClient> hubContext)
+        public EmployeesController(MyDbContext context, IHubContext<BroadcastHub, IHubClient> hubContext)
         {
             _context = context;
             _hubContext = hubContext;
         }
 
-        // GET: api/Employees
+        // GET: api/Employees  
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployee()
         {
             return await _context.Employee.ToListAsync();
         }
 
-        // GET: api/Employees/5
+        // GET: api/Employees/5  
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(string id)
         {
@@ -45,8 +45,8 @@ namespace RealTimeApp.Controllers
             return employee;
         }
 
-        // PUT: api/Employees/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT: api/Employees/5  
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754  
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEmployee(string id, Employee employee)
         {
@@ -56,6 +56,7 @@ namespace RealTimeApp.Controllers
             }
 
             _context.Entry(employee).State = EntityState.Modified;
+
             Notification notification = new Notification()
             {
                 EmployeeName = employee.Name,
@@ -83,15 +84,25 @@ namespace RealTimeApp.Controllers
             return NoContent();
         }
 
-        // POST: api/Employees
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/Employees  
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754  
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
+            employee.Id = Guid.NewGuid().ToString();
             _context.Employee.Add(employee);
+
+            Notification notification = new Notification()
+            {
+                EmployeeName = employee.Name,
+                TranType = "Add"
+            };
+            _context.Notification.Add(notification);
+
             try
             {
                 await _context.SaveChangesAsync();
+                await _hubContext.Clients.All.BroadcastMessage();
             }
             catch (DbUpdateException)
             {
@@ -108,7 +119,7 @@ namespace RealTimeApp.Controllers
             return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
         }
 
-        // DELETE: api/Employees/5
+        // DELETE: api/Employees/5  
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(string id)
         {
@@ -118,8 +129,17 @@ namespace RealTimeApp.Controllers
                 return NotFound();
             }
 
+            Notification notification = new Notification()
+            {
+                EmployeeName = employee.Name,
+                TranType = "Delete"
+            };
+
             _context.Employee.Remove(employee);
+            _context.Notification.Add(notification);
+
             await _context.SaveChangesAsync();
+            await _hubContext.Clients.All.BroadcastMessage();
 
             return NoContent();
         }
