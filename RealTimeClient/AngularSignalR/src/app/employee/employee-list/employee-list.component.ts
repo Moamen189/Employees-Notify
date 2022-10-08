@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
-import * as signalR from '@microsoft/signalr';
+import * as signalR from '@microsoft/SignalR';
 import { environment } from 'src/environments/environment';
 
 @Component({
