@@ -17,7 +17,7 @@
                  type="text"
                  placeholder="Name (required)"
                  formControlName="name"
-                 [ngClass]="{'is-invalid': displayMessage }" />
+                  />
           <span class="invalid-feedback">
             {{displayMessage}}
           </span>
@@ -33,7 +33,7 @@
                  type="text"
                  placeholder="cityName (required)"
                  formControlName="cityName"
-                 [ngClass]="{'is-invalid': displayMessage}" />
+             />
           <span class="invalid-feedback">
             {{displayMessage}}
           </span>
@@ -102,7 +102,7 @@
                   style="width:80px;"
                   type="button"
                   title="Cancel your edits"
-                  [routerLink]="['/employees']">
+                  >
             Cancel
           </button>
           <button class="btn btn-outline-warning" *ngIf="pageTitle != 'Add Employee'"
