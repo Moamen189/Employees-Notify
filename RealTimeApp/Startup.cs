@@ -59,7 +59,7 @@ namespace RealTimeApp
             app.UseRouting();
 
             app.UseAuthorization();
-
+            //EndPointSignalR
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<BroadcastHub>("/notify");
